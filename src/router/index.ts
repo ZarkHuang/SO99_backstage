@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/user',
-        name: '個人資料',
+        name: '角色管理',
         component: () => import('@/pages/UserPage.vue')
       }
     ]

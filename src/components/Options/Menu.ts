@@ -5,7 +5,7 @@ import SvgIcon from '@/components/Icons/SvgIcon.vue';
 
 // 菜單Icon渲染的函數
 function renderIcon(icon: string) {
-  return () => h(NIcon, { size: 24 }, { default: () => h(SvgIcon, { icon }) });
+  return () => h(NIcon, { size: 16 }, { default: () => h(SvgIcon, { icon }) });
 }
 
 /// 菜單選項數組
@@ -21,21 +21,21 @@ export const menuOptions: MenuOption[] = [
     key: '首頁',
     icon: renderIcon('House')
   },
-  {
-    type: 'divider',
-    props: {
-      style: { marginLeft: '32px' }
-    }
-  },
+  // {
+  //   type: 'divider',
+  //   props: {
+  //     style: { marginLeft: '32px' }
+  //   }
+  // },
   {
     label: () => h(
       RouterLink,
       {
-        to: { name: '個人資料' }
+        to: { name: '角色管理' }
       },
-      { default: () => '個人資料' }
+      { default: () => '角色管理' }
     ),
-    key: '個人資料',
+    key: '角色管理',
     icon: renderIcon('Users')
   },
   {

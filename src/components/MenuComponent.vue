@@ -1,43 +1,44 @@
 <template>
-  <n-menu style="text-align: left;" v-model:value="activeKey" :collapsed="collapsed" :collapsed-width="64"
-    :collapsed-icon-size="22" :options="menuOptions" @update:value="handleUpdateValue" />
+  <div>
+    <div class="logo">
+      <span
+        :style="{ color: themeStore.primaryColor, fontSize: '26px'  }">
+        test
+      </span>
+    </div>
+    <n-menu :options="menuOptions" />
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useLayoutStore } from '@/stores/useLayout';
-import { menuOptions } from '@/components/Options/Menu';  // 导入菜单选项数组
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { useThemeStore } from '@/stores/theme';
+import { useScreenStore } from '@/stores/useScreen';
+import { storeToRefs } from 'pinia';
+import { menuOptions } from './Options/Menu';
 
-export default defineComponent({
-  setup() {
-    const layoutStore = useLayoutStore();
-    const collapsed = computed(() => layoutStore.collapsed);
+// 使用 Pinia 存儲
+const themeStore = useThemeStore();
+const screenStore = useScreenStore();
+const { isHidden } = storeToRefs(screenStore);
 
-    const route = useRoute();
-    const router = useRouter();
-    const activeKey = ref(route.name as string);
+// setup 邏輯
+const collapsed = ref(false);
 
-    const handleUpdateValue = (key: string) => {
-      activeKey.value = key;
-      const targetOption = menuOptions.find(option => option.key === key);
-      if (targetOption && typeof targetOption.label === 'function') {
-        const labelVNode = targetOption.label();
-        const to = (labelVNode.props).to;
-        router.push(to);
-      }
-    };
+const handleCollapse = () => {
+  collapsed.value = true;
+};
 
-    watch(route, () => {
-      activeKey.value = route.name as string;
-    });
-
-    return {
-      menuOptions,
-      activeKey,
-      handleUpdateValue,
-      collapsed
-    };
-  }
-});
+const handleExpand = () => {
+  collapsed.value = false;
+};
 </script>
+
+<style scoped>
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px; /* 和 collapsedWidth 保持一致 */
+}
+</style>

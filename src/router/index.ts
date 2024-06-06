@@ -11,100 +11,53 @@ const routes: Array<RouteRecordRaw> = [
         path: '/home',
         name: '首頁',
         component: () => import('@/pages/HomePage.vue'),
+        meta: { breadcrumb: '首頁' }
       },
       {
         path: '/user',
         name: '角色管理',
-        component: () => import('@/pages/UserPage.vue')
+        component: () => import('@/pages/UserPage.vue'),
+        meta: { breadcrumb: '角色管理' }
+      },
+      {
+        path: '/account',
+        name: '管理帳號',
+        component: () => import('@/pages/AccountPage.vue'),
+        meta: { breadcrumb: '管理帳號' }
+      },
+      {
+        path: '/user-data',
+        name: '用戶資料',
+        component: () => import('@/pages/UserDataPage.vue'),
+        meta: { breadcrumb: '用戶資料' }
+      },
+      {
+        path: '/report',
+        name: '分析報表',
+        component: () => import('@/pages/ReportPage.vue'),
+        meta: { breadcrumb: '分析報表' }
+      },
+      {
+        path: '/messages',
+        name: '訊息管理',
+        component: () => import('@/pages/MessagesPage.vue'),
+        meta: { breadcrumb: '訊息管理' }
+      },
+      {
+        path: '/guidance',
+        name: '個管輔導',
+        component: () => import('@/pages/GuidancePage.vue'),
+        meta: { breadcrumb: '個管輔導' }
       }
     ]
   },
   {
-    path: '/',
-    name: '功能管理',
-    component: () => import('@/views/HomeView.vue'),
-    children: [
-      {
-        path: '/tunnel/list',
-        name: '功能列表',
-        component: () => import('@/pages/Tunnel/ListPage.vue'),
-      },
-      {
-        path: '/tunnel/download',
-        name: '下載',
-        component: () => import('@/pages/Tunnel/DownloadPage.vue'),
-      },
-      {
-        path: '/tunnel/config',
-        name: '配置文件',
-        component: () => import('@/pages/Tunnel/ConfigPage.vue'),
-      },
-      {
-        path: '/tunnel/status',
-        name: '節點狀態',
-        component: () => import('@/pages/Tunnel/StatusPage.vue'),
-      },
-    ]
-  },
-  {
-    path: '/',
-    name: '擴展功能',
-    component: () => import('@/views/HomeView.vue'),
-    children: [
-      {
-        path: '/expand/domainname',
-        name: '免費域名',
-        component: () => import('@/pages/Expand/Domainname.vue'),
-      },
-    ]
-  },
-  {
-    path: '/',
-    name: '增值中心',
-    component: () => import('@/views/HomeView.vue'),
-    children: [
-      {
-        path: '/shop/topup',
-        name: '購買點數卡',
-        component: () => import('@/pages/Shop/Topup.vue'),
-      },
-      {
-        path: '/other/buy',
-        name: '積分商城',
-        component: () => import('@/pages/Shop/BuyPage.vue'),
-      },
-      {
-        path: '/other/record',
-        name: '消費記錄',
-        component: () => import('@/pages/Shop/RecordPage.vue'),
-      },
-    ]
-  },
-  {
-    path: '/',
-    name: '其他資訊',
-    component: () => import('@/views/HomeView.vue'),
-    children: [
-      {
-        path: '/other/about',
-        name: '其他',
-        component: () => import('@/pages/Other/AboutPage.vue'),
-      },
-    ]
-  },
-  {
     path: '/:pathMatch(.*)*',
-    redirect: '/home',
-  },
-  // {
-  //   path: '/login',
-  //   name: '登錄',
-  //   component: () => import('@/views/LoginView.vue')
-  // }
+    redirect: '/home'
+  }
 ]
 
 const router = createRouter({
-  // history: createWebHistory(process.env.BASE_URL),
   history: createWebHistory(),
   routes
 })

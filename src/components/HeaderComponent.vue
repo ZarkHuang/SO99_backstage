@@ -2,8 +2,14 @@
   <n-space justify="space-between" class="center-aligned" style="background-color: #f5f5f5; border: none">
     <!-- 麵包屑 -->
     <n-breadcrumb :separator="'/'" style="margin-left: 24px;">
-      <n-breadcrumb-item :to="{ name: '首頁' }">首頁</n-breadcrumb-item>
-      <n-breadcrumb-item>角色管理</n-breadcrumb-item>
+      <n-breadcrumb-item @click="navigateHome">
+        <n-text style="cursor: pointer;">首頁</n-text>
+      </n-breadcrumb-item>
+      <n-breadcrumb-item v-for="(breadcrumb, index) in breadcrumbs" :key="index" :to="{ name: breadcrumb.name }">
+        <n-text :style="{ fontWeight: index === breadcrumbs.length - 1 ? 'bold' : 'normal' }">
+          {{ breadcrumb.meta.breadcrumb }}
+        </n-text>
+      </n-breadcrumb-item>
     </n-breadcrumb>
 
     <div :style="{ display: isHidden ? 'flex' : 'none' }">
@@ -25,45 +31,33 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, h } from 'vue';
-import { useThemeStore } from '@/stores/theme';
+import { ref, computed, h } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useScreenStore } from '@/stores/useScreen';
 import { storeToRefs } from 'pinia';
-import { NIcon, useMessage } from 'naive-ui';
-import { useRouter } from 'vue-router';
+import { NIcon, useMessage, NText } from 'naive-ui';
 import { menuOptions } from './Options/Menu';
 import { MenuOutline } from '@vicons/ionicons5';
 import SvgIcon from '@/components/Icons/SvgIcon.vue';
 
 // 使用 Pinia 存儲
-const themeStore = useThemeStore();
 const screenStore = useScreenStore();
 const { isHidden } = storeToRefs(screenStore);
 const message = useMessage();
 const router = useRouter();
+const route = useRoute();
+
+// 動態生成麵包屑
+const breadcrumbs = computed(() => {
+  const matched = route.matched;
+  return matched.slice(1); // 去掉根路由
+});
+
+const navigateHome = () => {
+  router.push({ name: '首頁' });
+};
 
 const userDropdownOptions = [
-  {
-    key: 'header',
-    type: 'render',
-    render: () => h(
-      'div',
-      { style: 'display: flex; align-items: center; padding: 8px 12px;' },
-      [
-        h('n-avatar', {
-          round: true,
-          style: 'margin-right: 12px;',
-          src: 'https://cdn.pixabay.com/photo/2011/03/21/10/45/pig-5652_1280.jpg',
-        }),
-        h('div', null, [
-          h('div', null, [h('n-text', { depth: 2 }, { default: () => 'zark2345' })]),
-          h('div', { style: 'font-size: 12px;' }, [
-            h('n-text', { depth: 3 }, { default: () => 'zark@gmail.com' }),
-          ]),
-        ]),
-      ],
-    ),
-  },
   {
     label: '用戶資料',
     key: 'profile',
@@ -104,5 +98,4 @@ p.userName {
   font-weight: bold;
   margin: 0 6px;
 }
-
 </style>

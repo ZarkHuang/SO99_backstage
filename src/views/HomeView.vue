@@ -1,22 +1,23 @@
 <template>
   <n-layout style="height: 100vh;">
-    <n-layout position="absolute" style=" bottom: 36px;" has-sider>
+  
+    <n-layout position="absolute" has-sider>
       <n-layout-sider :style="{ display: isHidden ? 'none' : 'flex' }" bordered collapse-mode="width"
         :collapsed-width="64" :width="240" :collapsed="collapsed" show-trigger @collapse="handleCollapse"
         @expand="handleExpand" :native-scrollbar="false">
         <MenuComponent />
       </n-layout-sider>
 
-      <n-layout :native-scrollbar="false">
+      <n-layout :native-scrollbar="false" style="height:100vh">
         <n-layout-header bordered>
           <HeaderComponent />
         </n-layout-header>
-        <n-layout content-style=" background-color:#fff; margin:0 16px 16px 16px; padding:24px">    
+        <n-layout content-style=" background-color:#fff; margin:0 16px 0px 16px; padding:8px">    
          <router-view></router-view>
          </n-layout>
       </n-layout>
 
-      <n-layout-footer position="absolute" style="height: 36px; bottom: 0; width: 100%;">
+      <n-layout-footer position="absolute" style="background-color: transparent; width: 100%;">
       <AppFooter />
     </n-layout-footer>
     </n-layout>

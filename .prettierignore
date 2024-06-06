@@ -1,3 +1,4 @@
+# Ignore artifacts:
 /dist/*
 .local
 .output.js
@@ -6,4 +7,8 @@
 **/*.svg
 **/*.sh
 
-/public/*
+# Ignore all HTML files:
+**/*.html
+
+auto-imports.d.ts
+components.d.ts

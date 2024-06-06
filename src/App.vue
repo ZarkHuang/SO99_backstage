@@ -1,5 +1,5 @@
 <template>
-  <n-config-provider :hljs="hljs" :theme="computedTheme" :theme-overrides="themeOverrides">
+  <n-config-provider :hljs="hljs" :theme-overrides="themeOverrides">
     <n-loading-bar-provider>
       <n-message-provider>
         <ViewComponent />
@@ -10,70 +10,67 @@
 
 <script setup lang="ts">
 import { defineComponent, h, computed } from 'vue';
-import { useThemeStore } from '@/stores/theme';
 import { RouterView } from 'vue-router';
 import { useProviderStore } from './stores/provider';
-import { NLoadingBarProvider, useLoadingBar, lightTheme, darkTheme, NMessageProvider } from 'naive-ui';
-import hljs from 'highlight.js/lib/core'
-import ini from 'highlight.js/lib/languages/ini'
-import nginx from 'highlight.js/lib/languages/nginx'
+import { NLoadingBarProvider, useLoadingBar, NMessageProvider } from 'naive-ui';
+import hljs from 'highlight.js/lib/core';
+import ini from 'highlight.js/lib/languages/ini';
+import nginx from 'highlight.js/lib/languages/nginx';
 
-hljs.registerLanguage('ini', ini)
-hljs.registerLanguage('nginx', nginx)
-
-// 當前年份時間
-const currentDate = new Date();
-const currentYear = currentDate.getFullYear();
+hljs.registerLanguage('ini', ini);
+hljs.registerLanguage('nginx', nginx);
 
 // 控制台输出
-const chmlFrpPanel =
-  `
+const chmlFrpPanel = `
  .--,       .--,
  ( (   .---./  ) )
   '.__/o   o__.'
      {=  ^  =}
       >  -  <
-     /       \
-    //       \\
-   //|   .   |\\____/ so99 開案!
-`
-  ;
+     /       \\
+    //       \\\\
+   //|   .   |\\\\____/ so99 開案!
+`;
 console.info(chmlFrpPanel);
-const themeStore = useThemeStore();
-
-const computedTheme = computed(() => {
-  return themeStore.theme === 'dark' ? darkTheme : lightTheme;
-});
 
 const themeOverrides = computed(() => {
   const commonColors = {
-    primaryColor: themeStore.primaryColor,
-    primaryColorHover: themeStore.primaryColor,
-    primaryColorPressed: themeStore.primaryColor,
-    primaryColorSuppl: themeStore.primaryColor,
-  };
-
-  const lightThemeOverrides = {
-    bodyColor: '#f5f5f5', // 更改亮色主题下的背景颜色
+    primaryColor: '#0E81AE',
+    primaryColorHover: '#E9F7FC',
+    primaryColorPressed: '#1398CC',
+    primaryColorSuppl: '#1398CC',
   };
 
   return {
     common: {
       ...commonColors,
-      ...(themeStore.theme === 'light' ? lightThemeOverrides : {}),
     },
     Button: {
-      // 调整Primary按钮，让它看起来更合适
       textColorPrimary: '#fff',
       textColorHoverPrimary: '#fff',
       textColorPressedPrimary: '#fff',
       textColorFocusPrimary: '#fff',
       textColorDisabledPrimary: '#fff',
-      colorPrimary: themeStore.primaryColor,
-      colorHoverPrimary: themeStore.primaryColor,
-      colorPressedPrimary: themeStore.primaryColor,
-      colorFocusPrimary: themeStore.primaryColor,
-      colorDisabledPrimary: themeStore.primaryColor,
+      colorPrimary: '#1398CC',
+      colorHoverPrimary: '#1398CC',
+      colorPressedPrimary: '#1398CC',
+      colorFocusPrimary: '#1398CC',
+      colorDisabledPrimary: '#1398CC',
+      borderColorPrimary: '#1398CC',
+      borderColorHoverPrimary: '#1398CC',
+      borderColorPressedPrimary: '#1398CC',
+      borderColorFocusPrimary: '#1398CC',
+      borderColorDisabledPrimary: '#1398CC',
+    },
+    Menu: {
+      itemTextColorActive: '#0E81AE',
+      itemTextColorFocus: '#0E81AE',
+      itemColorActive: '#E9F7FC',
+      itemColorFocus: '#47AED7',
+      itemTextColorHover: '#0E81AE',
+      itemIconColorHover: '#0E81AE',
+      itemColorHover: 'rgba(150, 205, 226, 0.2)',
+      itemTextColor: '#2c3e50',
     },
   };
 });
@@ -90,10 +87,9 @@ const ViewComponent = defineComponent({
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // text-align: center;
   color: #2c3e50;
 }
 </style>

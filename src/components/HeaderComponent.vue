@@ -50,7 +50,7 @@ const route = useRoute();
 // 動態生成麵包屑
 const breadcrumbs = computed(() => {
   const matched = route.matched;
-  return matched.slice(1); // 去掉根路由
+  return matched.slice(1);
 });
 
 const navigateHome = () => {
@@ -61,7 +61,7 @@ const userDropdownOptions = [
   {
     label: '用戶資料',
     key: 'profile',
-    icon: () => h(NIcon, { size: 16 }, { default: () => h(SvgIcon, { icon: 'House' }) }),
+    icon: () => h(NIcon, { size: 16 }, { default: () => h(SvgIcon, { icon: 'Edit' }) }),
     props: {
       onClick: () => {
         router.push('/user');
@@ -69,9 +69,19 @@ const userDropdownOptions = [
     },
   },
   {
+    label: '更新密碼',
+    key: 'password',
+    icon: () => h(NIcon, { size: 16 }, { default: () => h(SvgIcon, { icon: 'Key' }) }),
+    props: {
+      onClick: () => {
+        message.info('還沒做這個東西，這只是模組。');
+      },
+    },
+  },
+  {
     label: '退出登入',
     key: 'logout',
-    icon: () => h(NIcon, { size: 16, color: '#f5222d' }, { default: () => h(SvgIcon, { icon: 'House' }) }),
+    icon: () => h(NIcon, { size: 16 }, { default: () => h(SvgIcon, { icon: 'SignOut' }) }),
     props: {
       onClick: () => {
         message.info('還沒做這個東西，這只是模組。');

@@ -36,7 +36,7 @@ console.info(chmlFrpPanel);
 const themeOverrides = computed(() => {
   const commonColors = {
     primaryColor: '#0E81AE',
-    primaryColorHover: '#E9F7FC',
+    primaryColorHover: '#1398CC',
     primaryColorPressed: '#1398CC',
     primaryColorSuppl: '#1398CC',
   };
@@ -58,7 +58,7 @@ const themeOverrides = computed(() => {
       colorDisabledPrimary: '#1398CC',
       borderColorPrimary: '#1398CC',
       borderColorHoverPrimary: '#1398CC',
-      borderColorPressedPrimary: '#1398CC',
+      borderColorPressedPrimary: 'red',
       borderColorFocusPrimary: '#1398CC',
       borderColorDisabledPrimary: '#1398CC',
     },

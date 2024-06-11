@@ -25,24 +25,34 @@
       <!-- 表單內容 -->
       <n-space vertical>
         <div class="form-item">
-          <label>用戶ID</label>
-          <div>{{ drawerStore.editData.id }}</div>
+          <label>帳號*</label>
+          <n-input v-model:value="drawerStore.editData.id" placeholder="帳號" />
         </div>
         <div class="form-item">
-          <label>電話</label>
-          <div>{{ drawerStore.editData.tel }}</div>
+          <label>姓名*</label>
+          <n-input v-model:value="drawerStore.editData.name" placeholder="姓名" />
         </div>
         <div class="form-item">
-          <label>姓名</label>
-          <div>{{ drawerStore.editData.name }}</div>
+          <label>職稱*</label>
+          <n-input v-model:value="drawerStore.editData.career" placeholder="職稱" />
         </div>
         <div class="form-item">
-          <label>所屬角色</label>
+          <label>角色名稱*</label>
+          <n-input v-model:value="drawerStore.editData.position" placeholder="角色名稱" />
+        </div>
+        <div class="form-item">
+          <label>層級*</label>
           <n-select
-            v-model:value="selectedPosition"
-            :options="positionOptions"
-            placeholder="選擇角色"
+            v-model:value="drawerStore.editData.level"
+            :options="levelOptions"
+            placeholder="層級"
           />
+        </div>
+        <div class="form-item">
+          <label>操作*</label>
+          <div class="switch-container">
+            <n-switch v-model:value="drawerStore.editData.active" />
+          </div>
         </div>
       </n-space>
     </n-space>
@@ -50,31 +60,19 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, onMounted } from "vue";
-import { useDataDrawerStore } from "@/stores/drawers/UserDataDrawerStore";
+import { computed, ref } from "vue";
+import { useAccountDrawerStore } from "@/stores/drawers/AccountDrawerStore";
 import SvgIcon from "@/components/Icons/SvgIcon.vue";
 
-const drawerStore = useDataDrawerStore();
-const positionOptions = ref([
-  { label: "中國醫藥大學附設醫院", value: "中國醫藥大學附設醫院" },
-  { label: "長佳智能股份有限公司 ", value: "長佳智能股份有限公司 " },
-  { label: "中附醫健康醫學中心", value: "中附醫健康醫學中心" },
+const drawerStore = useAccountDrawerStore();
+const levelOptions = ref([
+  { label: "企業", value: "企業" },
+  { label: "管理員", value: "管理員" },
 ]);
-
-const selectedPosition = ref(positionOptions.value[0].value);
 
 const drawerTitle = computed(() =>
   drawerStore.mode === "edit" ? "編輯角色" : "新增角色"
 );
-
-onMounted(() => {
-  if (drawerStore.mode === "add") {
-    selectedPosition.value = positionOptions.value[0].value;
-  } else if (drawerStore.mode === "edit") {
-    selectedPosition.value =
-      drawerStore.editData.position || positionOptions.value[0].value;
-  }
-});
 
 const handleSave = () => {
   if (drawerStore.mode === "edit") {
@@ -110,12 +108,22 @@ const handleSave = () => {
 }
 
 .form-item label {
-  width: 100px;
+  width: 100px; /* 固定寬度 */
   margin-right: 16px;
-  text-align: left;
+  text-align: left; /* 對齊左側 */
 }
 
 .form-item > *:not(label) {
   flex: 1;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+}
+
+.n-divider:not(.n-divider--vertical) {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 </style>

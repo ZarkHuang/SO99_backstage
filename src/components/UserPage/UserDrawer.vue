@@ -1,15 +1,23 @@
 <template>
-  <n-drawer v-model:show="drawerStore.showEditDrawer" placement="right" :title="drawerStore.mode === 'edit' ? '編輯角色' : '新增角色'" width="432" style="padding:16px">
+  <n-drawer
+    v-model:show="drawerStore.showEditDrawer"
+    placement="right"
+    :title="drawerTitle"
+    width="432"
+    style="padding: 16px"
+  >
     <n-space vertical>
       <!-- 標題和按鈕 -->
       <div class="drawer-header">
         <n-icon class="close-icon" @click="drawerStore.closeDrawer">
           <SvgIcon icon="Close" />
         </n-icon>
-        <span class="drawer-title">{{ drawerStore.mode === 'edit' ? '編輯角色' : '新增角色' }}</span>
+        <span class="drawer-title">{{ drawerTitle }}</span>
         <n-space>
           <n-button ghost type="primary" @click="drawerStore.closeDrawer">取消</n-button>
-          <n-button type="primary" @click="handleSave">{{ drawerStore.mode === 'edit' ? '確定' : '新增' }}</n-button>
+          <n-button type="primary" @click="handleSave">{{
+            drawerStore.mode === "edit" ? "確定" : "新增"
+          }}</n-button>
         </n-space>
       </div>
       <n-divider />
@@ -18,16 +26,20 @@
       <n-space vertical>
         <div class="form-item">
           <label>角色名稱*</label>
-          <n-input v-model="drawerStore.editData.name" placeholder="角色名稱" />
+          <n-input v-model:value="drawerStore.editData.name" placeholder="角色名稱" />
         </div>
         <div class="form-item">
           <label>角色層級*</label>
-          <n-select v-model="drawerStore.editData.level" :options="levelOptions" placeholder="角色層級" />
+          <n-select
+            v-model:value="drawerStore.editData.level"
+            :options="levelOptions"
+            placeholder="角色層級"
+          />
         </div>
         <div class="form-item">
           <label>操作*</label>
           <div class="switch-container">
-            <n-switch v-model:checked="drawerStore.editData.active" />
+            <n-switch v-model:value="drawerStore.editData.active" />
           </div>
         </div>
       </n-space>
@@ -36,24 +48,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useDrawerStore } from '@/stores/drawer';
-import SvgIcon from '@/components/Icons/SvgIcon.vue';
+import { computed, ref } from "vue";
+import { useUserDrawerStore } from "@/stores/drawers/UserDrawerStore";
+import SvgIcon from "@/components/Icons/SvgIcon.vue";
 
-const drawerStore = useDrawerStore();
+const drawerStore = useUserDrawerStore();
 const levelOptions = ref([
-  { label: '企業', value: '企業' },
-  { label: '管理員', value: '管理員' }
-  // 添加其他角色層級選項
+  { label: "企業", value: "企業" },
+  { label: "管理員", value: "管理員" },
 ]);
 
+const drawerTitle = computed(() =>
+  drawerStore.mode === "edit" ? "編輯角色" : "新增角色"
+);
+
 const handleSave = () => {
-  if (drawerStore.mode === 'edit') {
-    // 調用編輯角色的 API
-    console.log('打編輯角色api:', drawerStore.editData);
+  if (drawerStore.mode === "edit") {
+    console.log("打編輯角色api:", drawerStore.editData);
   } else {
-    // 調用新增角色的 API
-    console.log('打新增角色api:', drawerStore.editData);
+    console.log("打新增角色api:", drawerStore.editData);
   }
   drawerStore.closeDrawer();
 };
@@ -83,9 +96,9 @@ const handleSave = () => {
 }
 
 .form-item label {
-  width: 100px;
+  width: 100px; /* 固定寬度 */
   margin-right: 16px;
-  text-align: left;
+  text-align: left; /* 對齊左側 */
 }
 
 .form-item > *:not(label) {
@@ -93,8 +106,8 @@ const handleSave = () => {
 }
 
 .switch-container {
-  display: flex;
-  align-items: center;
+  flex: 1;
+  text-align: left;
 }
 
 .n-divider:not(.n-divider--vertical) {

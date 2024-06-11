@@ -1,108 +1,142 @@
 <template>
-    <n-space vertical size="large" style="padding:16px;">
-        <!-- 搜尋區 -->
-        <n-space align="center" justify="space-between">
-            <n-space>
-                <n-input v-model="searchQuery" placeholder="搜尋角色" style="width: 184px;" />
-                <n-button ghost type="primary" @click="handleSearch">搜尋</n-button>
-            </n-space>
-            <n-button ghost type="primary" @click="handleAdd">新增角色</n-button>
-        </n-space>
-
-        <!-- 備註 -->
-        <div class="note">
-            備註: 初始預設只有自己的層級一個角色，並且只能新增自己往下的層級角色
-        </div>
-
-        <!-- 資料表 -->
-        <n-data-table :columns="columns" :data="tableData" :bordered="false" />
-        <BaseDrawer :show="drawerStore.showEditDrawer" :title="drawerTitle" :placement="'right'" :width="'432px'"
-          @update:show="drawerStore.closeDrawer" @save="handleSave" @close="handleClose">
-            <div class="form-item">
-                <label>角色名稱*</label>
-                <n-input v-model="drawerStore.editData.name" placeholder="角色名稱" />
-            </div>
-            <div class="form-item">
-                <label>角色層級*</label>
-                <n-select v-model="drawerStore.editData.level" :options="levelOptions" placeholder="角色層級" />
-            </div>
-            <div class="form-item">
-                <label>操作*</label>
-                <n-switch v-model:checked="drawerStore.editData.active" />
-            </div>
-        </BaseDrawer>
+  <n-space vertical size="large" class="container">
+    <!-- 搜尋區 -->
+    <n-space align="center" justify="space-between">
+      <n-space>
+        <n-input v-model="searchQuery" placeholder="搜尋角色" style="width: 184px" />
+        <n-button ghost type="primary" @click="handleSearch">搜尋</n-button>
+      </n-space>
+      <!-- <n-button ghost type="primary" @click="handleAdd">新增角色</n-button> -->
     </n-space>
+
+    <!-- 資料表 -->
+    <div class="table-container">
+      <n-data-table
+        :columns="columns"
+        :data="paginatedData"
+        :bordered="false"
+        style="margin-top: 8px"
+      />
+    </div>
+    <n-space justify="center">
+      <n-pagination
+        v-if="totalPages > 1"
+        :page="currentPage"
+        :page-size="pageSize"
+        :page-count="totalPages"
+        @update:page="handlePageChange"
+      />
+    </n-space>
+    <UserDataDrawer />
+    <n-modal
+      v-model:show="showSettingModal"
+      class="custom-card"
+      preset="card"
+      :style="bodyStyle"
+      :bordered="false"
+      size="huge"
+    >
+      <h3 style="margin: 0; padding-bottom: 8px">已送出同意管理申請</h3>
+      <div class="modalContent">
+        <p style="margin: 0">姓名: {{ selectedUser?.name }}</p>
+        <p style="margin: 0">電話: {{ selectedUser?.tel }}</p>
+      </div>
+    </n-modal>
+  </n-space>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import { getTableColumns, getMockTableData } from '@/components/UserDataPage/UserDataTable';
-import BaseDrawer from '@/components/Drawer/BaseDrawer.vue';
-import { useDrawerStore } from '@/stores/drawer';
+import { ref, computed } from "vue";
+import {
+  getTableColumns,
+  getMockTableData,
+} from "@/components/UserDataPage/UserDataTable";
+import UserDataDrawer from "@/components/UserDataPage/UserDataDrawer.vue";
+import { useDataDrawerStore } from "@/stores/drawers/UserDataDrawerStore";
 
 // 搜尋相關
-const searchQuery = ref('');
+const searchQuery = ref("");
 const handleSearch = () => {
-    console.log('Search clicked!', searchQuery.value);
-    // 這裡可以加入搜尋邏輯
+  console.log("Search clicked!", searchQuery.value);
+  // 這裡可以加入搜尋邏輯
 };
 const handleAdd = () => {
-    drawerStore.setEditData({ name: '', level: '', active: false }); // 清空editData
-    drawerStore.openDrawer('add'); // 打開drawer並設置為新增模式
+  drawerStore.openDrawer("add", {
+    id: "",
+    name: "",
+    career: "",
+    position: "",
+    level: "",
+    active: false,
+  });
+};
+
+// Modal 相關
+const showSettingModal = ref(false);
+const selectedUser = ref<any>(null);
+
+const bodyStyle = {
+  maxWidth: "300px",
+  textAlign: "center",
+  padding: "0px",
 };
 
 // 資料表相關
 const tableData = ref(getMockTableData());
-const drawerStore = useDrawerStore();
+const drawerStore = useDataDrawerStore();
+
 const handleEdit = (row: any) => {
-    drawerStore.setEditData({ ...row });
-    drawerStore.openDrawer('edit');
-};
-const columns = getTableColumns(handleEdit);
-
-const drawerTitle = computed(() => drawerStore.mode === 'edit' ? '編輯角色' : '新增角色');
-
-const levelOptions = ref([
-  { label: '企業', value: '企業' },
-  { label: '管理員', value: '管理員' }
-]);
-
-const handleSave = () => {
-    if (drawerStore.mode === 'edit') {
-        // 調用編輯角色的 API
-        console.log('打用戶資料編輯角色api:', drawerStore.editData);
-    } else {
-        // 調用新增角色的 API
-        console.log('打用戶資料新增角色api:', drawerStore.editData);
-    }
-    drawerStore.closeDrawer();
+  drawerStore.openDrawer("edit", row);
 };
 
-const handleClose = () => {
-    console.log('Drawer closed');
+const handleSetting = (row: any) => {
+  selectedUser.value = row;
+  showSettingModal.value = true;
+
+  // 更新資料
+  setTimeout(() => {
+    row.setting = "已設定";
+    row.agree = "同意";
+  }, 300);
+
+  // 3秒後自動關閉 modal
+  setTimeout(() => {
+    showSettingModal.value = false;
+  }, 2000);
 };
+
+// 分頁相關
+const pageSize = 13;
+const currentPage = ref(1);
+const totalPages = computed(() => Math.ceil(tableData.value.length / pageSize));
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize;
+  const end = start + pageSize;
+  return tableData.value.slice(start, end);
+});
+
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+};
+
+const columns = getTableColumns(handleEdit, handleSetting);
 </script>
 
 <style scoped>
-.note {
-    color: #999;
-    font-size: 12px;
-    margin-top: 16px;
+.table-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 760px;
 }
 
-.form-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
+.modalContent {
+  padding-bottom: 16px;
 }
 
-.form-item label {
-    width: 100px;
-    margin-right: 16px;
-    text-align: left;
-}
-
-.form-item > *:not(label) {
-    flex: 1;
+.modalContent p {
+  color: #8b8b8b;
 }
 </style>

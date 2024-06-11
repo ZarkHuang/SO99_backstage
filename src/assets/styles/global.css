@@ -11,3 +11,89 @@
 .n-card .n-card__action {
     border-radius: 8px 8px 10px 10px;
 }
+
+/* Modal樣式調整 */
+.n-card > .n-card-header svg{
+    height: 10px;
+    width: 10px;
+  }
+
+.n-card > .n-card-header {
+    padding: 8px 8px 0 8px;
+  }
+  
+  .n-card > .n-card__content,
+  .n-card > .n-card__footer {
+   padding: 0;
+  }
+
+/* drawer 樣式修改 */
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .close-icon {
+    cursor: pointer;
+  }
+  
+  .drawer-title {
+    font-weight: bold;
+    margin-left: 8px;
+    flex-grow: 1;
+  }
+  
+  .form-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .form-item label {
+    width: 100px; /* 固定寬度 */
+    margin-right: 16px;
+    text-align: left; /* 對齊左側 */
+  }
+  
+  .form-item > *:not(label) {
+    flex: 1;
+  }
+  
+  .switch-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  .n-divider:not(.n-divider--vertical) {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+
+  /* table 樣式修改 */
+  .n-data-table .n-data-table-td{
+    padding: 10px;
+    height: 48px;;
+  }
+
+  .n-data-table .n-data-table-thead{
+    height: 44px;
+  }
+
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    padding-top: 16px;
+  }
+
+  .note {
+    color: #999;
+    font-size: 12px;
+    margin-top: 12px;
+  }

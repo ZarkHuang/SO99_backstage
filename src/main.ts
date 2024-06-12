@@ -8,13 +8,17 @@ import '@/assets/styles/themes.css'
 import '@/assets/styles/global.css'
 import '@/styles/index.module.css'
 
+import naive from 'naive-ui'
+
 const app = createApp(App)
 
-import naive from 'naive-ui'
-// 通用字體
-import 'vfonts/Lato.css'
-// 等寬字體
-import 'vfonts/FiraCode.css'
+app.config.errorHandler = (err, instance, info) => {
+    console.warn('[Vue errorHandler]', err, instance, info)
+  }
+  
+  app.config.warnHandler = (msg, instance, trace) => {
+    console.warn('[Vue warnHandler]', msg, instance, trace)
+  }
 
 app.use(naive)
 app.use(createPinia())

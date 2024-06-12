@@ -139,7 +139,7 @@ export const getMockTableData = () => {
     for (let i = 1; i <= 20; i++) {
       data.push({
         checked: false,
-        id: i.toString(),
+        id: `2123156789${i}`,
         agree: i % 2 === 0 ? '同意' : '未回覆',
         position: i % 2 === 0 ? '長佳智能股份有限公司' : '其他公司',
         weight: i % 2 === 0 ? `-${(Math.random() * 1.5).toFixed(1)}` : `+${(Math.random() * 1.5).toFixed(1)}`,
